@@ -22,8 +22,8 @@ export default function App() {
 
   const startGame = () => setScreen('game');
   const restartGame = () => {
-    setObjectCount(50);
-    setMoveSpeed(1);
+    setObjectCount(objectCount);
+    setMoveSpeed(moveSpeed);
     setWinner(null);
     setScreen('start');
   };
@@ -189,9 +189,9 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
         />
       </div>
       <div className="flex justify-around mb-4">
-        <div>🪨 Pedras: {counts.rock}</div>
-        <div>📄 Papéis: {counts.paper}</div>
-        <div>✂️ Tesouras: {counts.scissors}</div>
+        <div>🪨: {counts.rock}</div>
+        <div>📄: {counts.paper}</div>
+        <div>✂️: {counts.scissors}</div>
       </div>
       <div ref={gameAreaRef} className="relative w-full h-[500px] border rounded overflow-hidden bg-gray-100">
         {objects.map(obj => (
@@ -203,8 +203,12 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
     top: obj.y,
     width: obj.size,
     height: obj.size,
+    boxshadow:' rgba(0, 0, 0, 0.24) 0px 3px 8px',
+    border: '0.5mm ridge rgb(211 220 50 / 0.6)',
+    borderColor: obj.type === 'rock' ? '#666163' :
+                     obj.type === 'paper' ? '#d4d489' : '#adeada',
     backgroundColor: obj.type === 'rock' ? '#FFF' :
-                     obj.type === 'paper' ? '#FFF' : '#FFF',
+                      obj.type === 'paper' ? '#FFF' : '#FFF',
   }}
 >
   {obj.type === 'rock' && '🪨'}
