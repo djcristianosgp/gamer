@@ -175,9 +175,22 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
   }, [ready]);
 
   return (
-    <div>
+   <div
+    id="divGame"
+    style={{
+      position: 'fixed',
+      top: '15px',
+      left: '15px',
+      right: '15px',
+      bottom: '15px',
+      overflow: 'auto', // opcional, se tiver rolagem
+      backgroundColor: '#f8f8f8', // opcional para visualização
+      padding: '15px', 
+      borderRadius: '12px',// opcional, caso queira espaço interno
+    }}
+  >
       <div className="mb-4">
-        <label>Velocidade:</label>
+        <label>Velocidade: {moveSpeed}</label>
         <input
           type="range"
           min="0.1"
@@ -193,7 +206,7 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
         <div>📄: {counts.paper}</div>
         <div>✂️: {counts.scissors}</div>
       </div>
-      <div ref={gameAreaRef} className="relative w-full h-[500px] border rounded overflow-hidden bg-gray-100">
+      <div ref={gameAreaRef} className="relative w-full h-[500PX] border rounded overflow-hidden bg-gray-100">      
         {objects.map(obj => (
          <div
   key={obj.id}
