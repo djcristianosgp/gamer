@@ -14,11 +14,13 @@ const COLORS = {
   scissors: 'bg-red-500',
 };
 
+
 export default function App() {
   const [screen, setScreen] = useState('start');
   const [objectCount, setObjectCount] = useState(50);
   const [moveSpeed, setMoveSpeed] = useState(0.5);
   const [winner, setWinner] = useState(null);
+  const [elapsedTimeFinal, setElapsedTimeFinal] = useState(0);
 
   const startGame = () => setScreen('game');
   const restartGame = () => {
@@ -45,11 +47,19 @@ export default function App() {
             setMoveSpeed={setMoveSpeed}
             setScreen={setScreen}
             setWinner={setWinner}
+            setElapsedTimeFinal={setElapsedTimeFinal}
           />
         )}
         {screen === 'results' && (
-          <ResultsScreen winner={winner} restartGame={restartGame} />
+          <ResultsScreen winner={winner} restartGame={restartGame}  elapsedTime={elapsedTimeFinal} />
         )}
+        <div className="text-center text-sm text-gray-500 mt-4">
+  Desenvolvido por <strong>Cristiano Grobério</strong> - 
+  <a href="https://www.instagram.com/djcristianosgp" target="_blank" rel="noopener noreferrer" className="text-blue-500 mx-1">
+    Instagram
+  </a>
+  - {new Date().getFullYear()}
+</div>
       </div>
     </div>
   );
@@ -73,12 +83,14 @@ function StartScreen({ objectCount, setObjectCount, startGame }) {
   );
 }
 
-function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, setWinner }) {
+
+function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, setWinner, setElapsedTimeFinal }) {
   const gameAreaRef = useRef(null);
   const [objects, setObjects] = useState([]);
   const [counts, setCounts] = useState({ rock: 0, paper: 0, scissors: 0 });
   const [ready, setReady] = useState(false);
   const animationId = useRef(null);
+  const [elapsedTime, setElapsedTime] = useState(0);
 
   const generateObject = useCallback((type, id, width, height) => {
   const size = 30;
@@ -171,6 +183,7 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
         const alive = Object.entries(updatedCounts).filter(([_, v]) => v > 0);
         if (alive.length === 1) {
           setWinner(alive[0][0]);
+          setElapsedTimeFinal(elapsedTime);
           setScreen('results');
           cancelAnimationFrame(animationId.current);
         } else {
@@ -184,6 +197,16 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
     animationId.current = requestAnimationFrame(update);
     return () => cancelAnimationFrame(animationId.current);
   }, [ready]);
+
+  useEffect(() => {
+  if (!ready) return;
+
+  const interval = setInterval(() => {
+    setElapsedTime((prev) => prev + 1);
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, [ready]);
 
   return (
    <div
@@ -217,6 +240,9 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
         <div>📄: {counts.paper}</div>
         <div>✂️: {counts.scissors}</div>
       </div>
+      <div className="text-center mb-2 text-sm text-gray-700">
+  ⏱ Tempo: {elapsedTime}s
+</div>
       <div ref={gameAreaRef} className="relative w-full h-[500PX] border rounded overflow-hidden bg-gray-100">      
         {objects.map(obj => (
          <div
@@ -250,7 +276,7 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
   );
 }
 
-function ResultsScreen({ winner, restartGame }) {
+function ResultsScreen({ winner, restartGame, elapsedTime }) {
   const label = {
     rock: 'Pedra 🪨',
     paper: 'Papel 📄',
@@ -260,6 +286,7 @@ function ResultsScreen({ winner, restartGame }) {
     <div className="text-center">
       <h2 className="text-3xl font-bold mb-4">Fim de Jogo!</h2>
       <p className="text-xl mb-6">Vencedor: <strong>{label[winner]}</strong></p>
+      <p className="text-lg mb-2">⏱ Duração da partida: <strong>{elapsedTime}s</strong></p>
       <button onClick={restartGame} className="bg-blue-600 text-white px-6 py-2 rounded">
         Jogar Novamente
       </button>
