@@ -58,18 +58,18 @@ export default function App() {
           />
         )}
         {screen === 'results' && (
-          <ResultsScreen winner={winner} restartGame={restartGame}  elapsedTime={elapsedTimeFinal} />
+          <ResultsScreen winner={winner} restartGame={restartGame} elapsedTime={elapsedTimeFinal} />
         )}
         <div className="text-center text-sm text-gray-500 mt-4">
-  Desenvolvido por <strong>Cristiano Grobério</strong> - 
-  <a href="https://www.instagram.com/djcristianosgp" target="_blank" rel="noopener noreferrer" className="text-blue-500 mx-1">
-    Instagram
-  </a>
-  - {new Date().getFullYear()}
-</div>
-<div className="text-center text-sm text-gray-500 mt-4">
-  Versão: <strong>{versaosystem.ano}.{versaosystem.mes}.{versaosystem.dia}.{versaosystem.comp}</strong> 
-</div>
+          Desenvolvido por <strong>Cristiano Grobério</strong> -
+          <a href="https://www.instagram.com/djcristianosgp" target="_blank" rel="noopener noreferrer" className="text-blue-500 mx-1">
+            Instagram
+          </a>
+          - {new Date().getFullYear()}
+        </div>
+        <div className="text-center text-sm text-gray-500 mt-4">
+          Versão: <strong>{versaosystem.ano}.{versaosystem.mes}.{versaosystem.dia}.{versaosystem.comp}</strong>
+        </div>
       </div>
     </div>
   );
@@ -103,56 +103,56 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
   const [elapsedTime, setElapsedTime] = useState(0);
 
   const generateObject = useCallback((type, id, width, height) => {
-  const size = 30;
-  const angle = Math.random() * Math.PI * 2;
-  const speed = (Math.random() * 0.5 + 0.3) * moveSpeed; // velocidade entre 0.3 e 0.8 vezes moveSpeed
+    const size = 30;
+    const angle = Math.random() * Math.PI * 2;
+    const speed = (Math.random() * 0.5 + 0.3) * moveSpeed; // velocidade entre 0.3 e 0.8 vezes moveSpeed
 
-  return {
-    id,
-    type,
-    x: Math.random() * (width - size),
-    y: Math.random() * (height - size),
-    vx: Math.cos(angle) * speed,
-    vy: Math.sin(angle) * speed,
-    size,
-  };
-}, [moveSpeed]);
+    return {
+      id,
+      type,
+      x: Math.random() * (width - size),
+      y: Math.random() * (height - size),
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      size,
+    };
+  }, [moveSpeed]);
 
 
   useEffect(() => {
-  const area = gameAreaRef.current;
-  if (!area) return;
+    const area = gameAreaRef.current;
+    if (!area) return;
 
-  const waitForSizeAndInitialize = () => {
-    const { clientWidth, clientHeight } = area;
+    const waitForSizeAndInitialize = () => {
+      const { clientWidth, clientHeight } = area;
 
-    // Aguarda até a div estar visível com tamanho significativo
-    if (clientWidth < 100 || clientHeight < 100) {
-      setTimeout(waitForSizeAndInitialize, 50);
-      return;
-    }
-
-    const all = [];
-
-    ['rock', 'paper', 'scissors'].forEach(type => {
-      for (let i = 0; i < initialObjectCount; i++) {
-        all.push(generateObject(type, `${type}-${i}`, clientWidth, clientHeight));
+      // Aguarda até a div estar visível com tamanho significativo
+      if (clientWidth < 100 || clientHeight < 100) {
+        setTimeout(waitForSizeAndInitialize, 50);
+        return;
       }
-    });
 
-    setObjects(all);
-    setCounts({
-      rock: initialObjectCount,
-      paper: initialObjectCount,
-      scissors: initialObjectCount,
-    });
+      const all = [];
 
-    const timeout = setTimeout(() => setReady(true), 1500);
-    return () => clearTimeout(timeout);
-  };
+      ['rock', 'paper', 'scissors'].forEach(type => {
+        for (let i = 0; i < initialObjectCount; i++) {
+          all.push(generateObject(type, `${type}-${i}`, clientWidth, clientHeight));
+        }
+      });
 
-  waitForSizeAndInitialize();
-}, [generateObject, initialObjectCount]);
+      setObjects(all);
+      setCounts({
+        rock: initialObjectCount,
+        paper: initialObjectCount,
+        scissors: initialObjectCount,
+      });
+
+      const timeout = setTimeout(() => setReady(true), 1500);
+      return () => clearTimeout(timeout);
+    };
+
+    waitForSizeAndInitialize();
+  }, [generateObject, initialObjectCount]);
 
   useEffect(() => {
     if (!ready) return;
@@ -209,30 +209,30 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
   }, [ready]);
 
   useEffect(() => {
-  if (!ready) return;
+    if (!ready) return;
 
-  const interval = setInterval(() => {
-    setElapsedTime((prev) => prev + 1);
-  }, 1000);
+    const interval = setInterval(() => {
+      setElapsedTime((prev) => prev + 1);
+    }, 1000);
 
-  return () => clearInterval(interval);
-}, [ready]);
+    return () => clearInterval(interval);
+  }, [ready]);
 
   return (
-   <div
-    id="divGame"
-    style={{
-      position: 'fixed',
-      top: '15px',
-      left: '15px',
-      right: '15px',
-      bottom: '15px',
-      overflow: 'auto', // opcional, se tiver rolagem
-      backgroundColor: '#f8f8f8', // opcional para visualização
-      padding: '15px', 
-      borderRadius: '12px',// opcional, caso queira espaço interno
-    }}
-  >
+    <div
+      id="divGame"
+      style={{
+        position: 'fixed',
+        top: '15px',
+        left: '15px',
+        right: '15px',
+        bottom: '15px',
+        overflow: 'auto', // opcional, se tiver rolagem
+        backgroundColor: '#f8f8f8', // opcional para visualização
+        padding: '15px',
+        borderRadius: '12px',// opcional, caso queira espaço interno
+      }}
+    >
       <div className="mb-4">
         <label>Velocidade: {moveSpeed}</label>
         <input
@@ -251,30 +251,30 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
         <div>✂️: {counts.scissors}</div>
       </div>
       <div className="text-center mb-2 text-sm text-gray-700">
-  ⏱ Tempo: {elapsedTime}s
-</div>
-      <div ref={gameAreaRef} className="relative w-full h-[500PX] border rounded overflow-hidden bg-gray-100">      
+        ⏱ Tempo: {elapsedTime}s
+      </div>
+      <div ref={gameAreaRef} className="relative w-full h-[500PX] border rounded overflow-hidden bg-gray-100">
         {objects.map(obj => (
-         <div
-  key={obj.id}
-  className="absolute flex items-center justify-center text-white font-bold text-sm rounded-full"
-  style={{   
-    left: obj.x,
-    top: obj.y,
-    width: obj.size,
-    height: obj.size,
-    boxshadow:' rgba(0, 0, 0, 0.24) 0px 3px 8px',
-    border: '0.5mm ridge rgb(211 220 50 / 0.6)',
-    borderColor: obj.type === 'rock' ? '#666163' :
-                     obj.type === 'paper' ? '#d4d489' : '#adeada',
-    backgroundColor: obj.type === 'rock' ? '#FFF' :
-                      obj.type === 'paper' ? '#FFF' : '#FFF',
-  }}
->
-  {obj.type === 'rock' && '🪨'}
-  {obj.type === 'paper' && '📄'}
-  {obj.type === 'scissors' && '✂️'}
-</div>
+          <div
+            key={obj.id}
+            className="absolute flex items-center justify-center text-white font-bold text-sm rounded-full"
+            style={{
+              left: obj.x,
+              top: obj.y,
+              width: obj.size,
+              height: obj.size,
+              boxshadow: ' rgba(0, 0, 0, 0.24) 0px 3px 8px',
+              border: '0.5mm ridge rgb(211 220 50 / 0.6)',
+              borderColor: obj.type === 'rock' ? '#666163' :
+                obj.type === 'paper' ? '#d4d489' : '#adeada',
+              backgroundColor: obj.type === 'rock' ? '#FFF' :
+                obj.type === 'paper' ? '#FFF' : '#FFF',
+            }}
+          >
+            {obj.type === 'rock' && '🪨'}
+            {obj.type === 'paper' && '📄'}
+            {obj.type === 'scissors' && '✂️'}
+          </div>
         ))}
         {!ready && (
           <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 text-xl font-bold">
