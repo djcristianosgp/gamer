@@ -17,7 +17,7 @@ const COLORS = {
 export default function App() {
   const [screen, setScreen] = useState('start');
   const [objectCount, setObjectCount] = useState(50);
-  const [moveSpeed, setMoveSpeed] = useState(0.1);
+  const [moveSpeed, setMoveSpeed] = useState(0.5);
   const [winner, setWinner] = useState(null);
 
   const startGame = () => setScreen('game');
@@ -98,10 +98,18 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
 
 
   useEffect(() => {
-    const area = gameAreaRef.current;
-    if (!area) return;
+  const area = gameAreaRef.current;
+  if (!area) return;
 
+  const waitForSizeAndInitialize = () => {
     const { clientWidth, clientHeight } = area;
+
+    // Aguarda até a div estar visível com tamanho significativo
+    if (clientWidth < 100 || clientHeight < 100) {
+      setTimeout(waitForSizeAndInitialize, 50);
+      return;
+    }
+
     const all = [];
 
     ['rock', 'paper', 'scissors'].forEach(type => {
@@ -119,7 +127,10 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
 
     const timeout = setTimeout(() => setReady(true), 1500);
     return () => clearTimeout(timeout);
-  }, [generateObject, initialObjectCount]);
+  };
+
+  waitForSizeAndInitialize();
+}, [generateObject, initialObjectCount]);
 
   useEffect(() => {
     if (!ready) return;
