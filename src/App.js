@@ -12,7 +12,7 @@ const versaosystem = {
   ano: '2025',
   mes: '07',
   dia: '17',
-  comp: '1455'
+  comp: '1532'
 }
 
 const COLORS = {
@@ -45,6 +45,8 @@ export default function App() {
             objectCount={objectCount}
             setObjectCount={setObjectCount}
             startGame={startGame}
+            setMoveSpeed={setMoveSpeed}
+            moveSpeed={moveSpeed}
           />
         )}
         {screen === 'game' && (
@@ -81,7 +83,7 @@ function formatTime(seconds) {
   return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
 }
 
-function StartScreen({ objectCount, setObjectCount, startGame }) {
+function StartScreen({ objectCount, setObjectCount, startGame,moveSpeed,setMoveSpeed }) {
   return (
     <div className="text-center">
       <h1 className="text-4xl font-bold mb-6">Pedra 🪨 , Papel 📄 e Tesoura ✂️</h1>
@@ -92,6 +94,18 @@ function StartScreen({ objectCount, setObjectCount, startGame }) {
         onChange={(e) => setObjectCount(Math.max(1, parseInt(e.target.value)))}
         className="p-2 border rounded text-center w-full mb-4"
       />
+            <div className="mb-4">
+        <label>Velocidade: {moveSpeed}</label>
+        <input
+          type="range"
+          min="0.1"
+          max="5"
+          step="0.1"
+          value={moveSpeed}
+          onChange={(e) => setMoveSpeed(parseFloat(e.target.value))}
+          className="w-full"
+        />
+      </div>
       <button onClick={startGame} className="bg-blue-600 text-white px-6 py-2 rounded">
         Iniciar Jogo
       </button>
@@ -107,6 +121,7 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
   const [ready, setReady] = useState(false);
   const animationId = useRef(null);
   const [elapsedTime, setElapsedTime] = useState(0);
+  const elapsedTimeRef = useRef(0);
 
   const generateObject = useCallback((type, id, width, height) => {
     const size = 30;
@@ -203,7 +218,7 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
         const alive = Object.entries(updatedCounts).filter(([_, v]) => v > 0);
         if (alive.length === 1) {
           setWinner(alive[0][0]);
-          setElapsedTimeFinal(elapsedTime);
+         setElapsedTimeFinal(elapsedTimeRef.current);
           setScreen('results');
           cancelAnimationFrame(animationId.current);
         } else {
@@ -221,9 +236,11 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
   useEffect(() => {
     if (!ready) return;
 
-    const interval = setInterval(() => {
-      setElapsedTime((prev) => prev + 1);
-    }, 1000);
+    const interval = setElapsedTime((prev) => {
+  const next = prev + 1;
+  elapsedTimeRef.current = next;
+  return next;
+});
 
     return () => clearInterval(interval);
   }, [ready]);
