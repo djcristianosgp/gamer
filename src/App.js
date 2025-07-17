@@ -275,7 +275,7 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
               height: obj.transforming ? obj.size * 1.1 : obj.size,
               opacity: obj.transforming ? 0.6 : 1,
               transition: 'all 0.3s ease-in-out',
-              boxShadow: '0 0 10px rgba(0,0,0,0.3)',
+              // boxShadow: '0 0 10px rgba(0,0,0,0.3)',
               border: '0.5mm ridge rgb(211 220 50 / 0.6)',
               borderColor: obj.type === 'rock' ? '#666163' :
                 obj.type === 'paper' ? '#d4d489' : '#adeada',
