@@ -75,6 +75,12 @@ export default function App() {
   );
 }
 
+function formatTime(seconds) {
+  const min = Math.floor(seconds / 60);
+  const sec = seconds % 60;
+  return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+}
+
 function StartScreen({ objectCount, setObjectCount, startGame }) {
   return (
     <div className="text-center">
@@ -181,6 +187,10 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
             if (dist < obj.size) {
               if (rules[obj.type] === other.type) {
                 other.type = obj.type;
+                other.transforming = true; // ⬅️ Marca para animar
+                setTimeout(() => {
+                  other.transforming = false; // ⬅️ Limpa após 300ms
+                }, 300);
               }
             }
           }
@@ -251,7 +261,7 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
         <div>✂️: {counts.scissors}</div>
       </div>
       <div className="text-center mb-2 text-sm text-gray-700">
-        ⏱ Tempo: {elapsedTime}s
+        ⏱ Tempo: {formatTime(elapsedTime)}
       </div>
       <div ref={gameAreaRef} className="relative w-full h-[500PX] border rounded overflow-hidden bg-gray-100">
         {objects.map(obj => (
@@ -261,14 +271,16 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
             style={{
               left: obj.x,
               top: obj.y,
-              width: obj.size,
-              height: obj.size,
-              boxshadow: ' rgba(0, 0, 0, 0.24) 0px 3px 8px',
+              width: obj.transforming ? obj.size * 1.4 : obj.size,
+              height: obj.transforming ? obj.size * 1.4 : obj.size,
+              opacity: obj.transforming ? 0.6 : 1,
+              transition: 'all 0.3s ease-in-out',
+              boxShadow: '0 0 10px rgba(0,0,0,0.3)',
               border: '0.5mm ridge rgb(211 220 50 / 0.6)',
               borderColor: obj.type === 'rock' ? '#666163' :
                 obj.type === 'paper' ? '#d4d489' : '#adeada',
-              backgroundColor: obj.type === 'rock' ? '#FFF' :
-                obj.type === 'paper' ? '#FFF' : '#FFF',
+              backgroundColor: '#FFF',
+              transform: obj.transforming ? 'scale(1.4) rotate(15deg)' : 'scale(1)',
             }}
           >
             {obj.type === 'rock' && '🪨'}
@@ -296,7 +308,7 @@ function ResultsScreen({ winner, restartGame, elapsedTime }) {
     <div className="text-center">
       <h2 className="text-3xl font-bold mb-4">Fim de Jogo!</h2>
       <p className="text-xl mb-6">Vencedor: <strong>{label[winner]}</strong></p>
-      <p className="text-lg mb-2">⏱ Duração da partida: <strong>{elapsedTime}s</strong></p>
+      <p className="text-lg mb-2">⏱ Duração da partida: <strong>{formatTime(elapsedTime)}</strong></p>
       <button onClick={restartGame} className="bg-blue-600 text-white px-6 py-2 rounded">
         Jogar Novamente
       </button>
