@@ -8,6 +8,13 @@ const rules = {
   scissors: 'paper',
 };
 
+const versaosystem = {
+  ano: '2025',
+  mes: '07',
+  dia: '17',
+  comp: '1432'
+}
+
 const COLORS = {
   rock: 'bg-gray-700',
   paper: 'bg-green-500',
@@ -59,6 +66,9 @@ export default function App() {
     Instagram
   </a>
   - {new Date().getFullYear()}
+</div>
+<div className="text-center text-sm text-gray-500 mt-4">
+  Versão: <strong>{versaosystem.ano}.{versaosystem.mes}.{versaosystem.dia}.{versaosystem.comp}</strong> 
 </div>
       </div>
     </div>
@@ -248,7 +258,7 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
          <div
   key={obj.id}
   className="absolute flex items-center justify-center text-white font-bold text-sm rounded-full"
-  style={{
+  style={{   
     left: obj.x,
     top: obj.y,
     width: obj.size,
