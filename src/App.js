@@ -12,7 +12,7 @@ const versaosystem = {
   ano: '2025',
   mes: '07',
   dia: '17',
-  comp: '1432'
+  comp: '1455'
 }
 
 const COLORS = {
@@ -271,8 +271,8 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
             style={{
               left: obj.x,
               top: obj.y,
-              width: obj.transforming ? obj.size * 1.4 : obj.size,
-              height: obj.transforming ? obj.size * 1.4 : obj.size,
+              width: obj.transforming ? obj.size * 1.1 : obj.size,
+              height: obj.transforming ? obj.size * 1.1 : obj.size,
               opacity: obj.transforming ? 0.6 : 1,
               transition: 'all 0.3s ease-in-out',
               boxShadow: '0 0 10px rgba(0,0,0,0.3)',
@@ -280,7 +280,7 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
               borderColor: obj.type === 'rock' ? '#666163' :
                 obj.type === 'paper' ? '#d4d489' : '#adeada',
               backgroundColor: '#FFF',
-              transform: obj.transforming ? 'scale(1.4) rotate(15deg)' : 'scale(1)',
+              transform: obj.transforming ? 'scale(1.1) rotate(180deg)' : 'scale(1)',
             }}
           >
             {obj.type === 'rock' && '🪨'}
