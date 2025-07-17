@@ -12,7 +12,7 @@ const versaosystem = {
   ano: '2025',
   mes: '07',
   dia: '17',
-  comp: '1532'
+  comp: '1548'
 }
 
 const COLORS = {
@@ -21,13 +21,13 @@ const COLORS = {
   scissors: 'bg-red-500',
 };
 
-
 export default function App() {
   const [screen, setScreen] = useState('start');
   const [objectCount, setObjectCount] = useState(50);
   const [moveSpeed, setMoveSpeed] = useState(0.5);
   const [winner, setWinner] = useState(null);
   const [elapsedTimeFinal, setElapsedTimeFinal] = useState(0);
+  const [playerName, setPlayerName] = useState('');
 
   const startGame = () => setScreen('game');
   const restartGame = () => {
@@ -47,6 +47,8 @@ export default function App() {
             startGame={startGame}
             setMoveSpeed={setMoveSpeed}
             moveSpeed={moveSpeed}
+            playerName={playerName}
+            setPlayerName={setPlayerName}
           />
         )}
         {screen === 'game' && (
@@ -60,7 +62,7 @@ export default function App() {
           />
         )}
         {screen === 'results' && (
-          <ResultsScreen winner={winner} restartGame={restartGame} elapsedTime={elapsedTimeFinal} />
+          <ResultsScreen winner={winner} restartGame={restartGame} elapsedTime={elapsedTimeFinal} playerName={playerName} />
         )}
         <div className="text-center text-sm text-gray-500 mt-4">
           Desenvolvido por <strong>Cristiano Grobério</strong> -
@@ -83,7 +85,21 @@ function formatTime(seconds) {
   return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
 }
 
-function StartScreen({ objectCount, setObjectCount, startGame,moveSpeed,setMoveSpeed }) {
+function compartilharNoWhatsApp(winner, time, nome) {
+  const mensagem = `🏆 Resultado da partida!
+
+Jogador: ${nome || 'Anônimo'}
+Vencedor: ${winner}
+Duração: ${formatTime(time)}
+
+Jogue agora: https://gamer-ruddy.vercel.app/`;
+
+  const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+  window.open(url, '_blank');
+}
+
+
+function StartScreen({ objectCount, setObjectCount, startGame, moveSpeed, setMoveSpeed,playerName,setPlayerName }) {
   return (
     <div className="text-center">
       <h1 className="text-4xl font-bold mb-6">Pedra 🪨 , Papel 📄 e Tesoura ✂️</h1>
@@ -94,7 +110,22 @@ function StartScreen({ objectCount, setObjectCount, startGame,moveSpeed,setMoveS
         onChange={(e) => setObjectCount(Math.max(1, parseInt(e.target.value)))}
         className="p-2 border rounded text-center w-full mb-4"
       />
-            <div className="mb-4">
+      <input
+        type="text"
+        value={playerName}
+        onChange={(e) => setPlayerName(e.target.value)}
+        placeholder="Digite seu nome"
+        style={{
+          padding: '10px',
+          fontSize: '16px',
+          marginBottom: '10px',
+          width: '100%',
+          maxWidth: '300px',
+          borderRadius: '5px',
+          border: '1px solid #ccc'
+        }}
+      />
+      <div className="mb-4">
         <label>Velocidade: {moveSpeed}</label>
         <input
           type="range"
@@ -218,7 +249,7 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
         const alive = Object.entries(updatedCounts).filter(([_, v]) => v > 0);
         if (alive.length === 1) {
           setWinner(alive[0][0]);
-         setElapsedTimeFinal(elapsedTimeRef.current);
+          setElapsedTimeFinal(elapsedTimeRef.current);
           setScreen('results');
           cancelAnimationFrame(animationId.current);
         } else {
@@ -236,14 +267,17 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
   useEffect(() => {
     if (!ready) return;
 
-    const interval = setElapsedTime((prev) => {
-  const next = prev + 1;
-  elapsedTimeRef.current = next;
-  return next;
-});
+    const interval = setInterval(() => {
+      setElapsedTime((prev) => {
+        const next = prev + 1;
+        elapsedTimeRef.current = next;
+        return next;
+      });
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [ready]);
+
 
   return (
     <div
@@ -315,7 +349,7 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
   );
 }
 
-function ResultsScreen({ winner, restartGame, elapsedTime }) {
+function ResultsScreen({ winner, restartGame, elapsedTime,playerName }) {
   const label = {
     rock: 'Pedra 🪨',
     paper: 'Papel 📄',
@@ -326,9 +360,25 @@ function ResultsScreen({ winner, restartGame, elapsedTime }) {
       <h2 className="text-3xl font-bold mb-4">Fim de Jogo!</h2>
       <p className="text-xl mb-6">Vencedor: <strong>{label[winner]}</strong></p>
       <p className="text-lg mb-2">⏱ Duração da partida: <strong>{formatTime(elapsedTime)}</strong></p>
-      <button onClick={restartGame} className="bg-blue-600 text-white px-6 py-2 rounded">
-        Jogar Novamente
-      </button>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+        <button onClick={restartGame} className="bg-blue-600 text-white px-6 py-2 rounded">
+          Jogar Novamente
+        </button>
+        <button
+          onClick={() => compartilharNoWhatsApp(winner, elapsedTime, playerName)}
+          style={{
+            marginTop: '20px',
+            padding: '10px 20px',
+            backgroundColor: '#25D366',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            fontSize: '16px',
+            cursor: 'pointer',
+          }}
+        >📤 Compartilhar no WhatsApp
+        </button>
+      </div>
     </div>
   );
 }
