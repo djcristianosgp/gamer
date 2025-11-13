@@ -1,11 +1,11 @@
 import React from 'react';
 
 // Regras do jogo
-const rules = {
-  rock: 'scissors',
-  paper: 'rock',
-  scissors: 'paper',
-};
+// const rules = {
+//   rock: 'scissors',
+//   paper: 'rock',
+//   scissors: 'paper',
+// };
 
 function StartScreen({ objectCount, setObjectCount, startGame, moveSpeed, setMoveSpeed, playerName, setPlayerName }) {
   return (

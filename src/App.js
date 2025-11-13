@@ -11,11 +11,11 @@ const versaosystem = {
   comp: '1856'
 }
 
-const COLORS = {
-  rock: 'bg-gray-700',
-  paper: 'bg-green-500',
-  scissors: 'bg-red-500',
-};
+// const COLORS = {
+//   rock: 'bg-gray-700',
+//   paper: 'bg-green-500',
+//   scissors: 'bg-red-500',
+// };
 
 export default function App() {
   const [screen, setScreen] = useState('start');
@@ -81,15 +81,15 @@ function formatTime(seconds) {
   return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
 }
 
-function compartilharNoWhatsApp(winner, time, nome) {
-  const mensagem = `🏆 Resultado da partida!
+// function compartilharNoWhatsApp(winner, time, nome) {
+//   const mensagem = `🏆 Resultado da partida!
 
-Jogador: ${nome || 'Anônimo'}
-Vencedor: ${winner}
-Duração: ${formatTime(time)}
+// Jogador: ${nome || 'Anônimo'}
+// Vencedor: ${winner}
+// Duração: ${formatTime(time)}
 
-Jogue agora: https://gamer-ruddy.vercel.app/`;
+// Jogue agora: https://gamer-ruddy.vercel.app/`;
 
-  const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
-  window.open(url, '_blank');
-}
+//   const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+//   window.open(url, '_blank');
+// }

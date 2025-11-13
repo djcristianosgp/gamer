@@ -1,11 +1,11 @@
 import React from 'react';
 
 // Regras do jogo
-const rules = {
-  rock: 'scissors',
-  paper: 'rock',
-  scissors: 'paper',
-};
+// const rules = {
+//   rock: 'scissors',
+//   paper: 'rock',
+//   scissors: 'paper',
+// };
 
 function ResultsScreen({ winner, restartGame, elapsedTime, playerName }) {
   const label = {
