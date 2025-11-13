@@ -1,3 +1,4 @@
+import React from 'react';
 
 // Regras do jogo
 const rules = {
@@ -9,7 +10,7 @@ const rules = {
 function StartScreen({ objectCount, setObjectCount, startGame, moveSpeed, setMoveSpeed, playerName, setPlayerName }) {
   return (
     <div className="text-center">
-      <h1 className="text-4xl font-bold mb-6">Pedra 🪨 , Papel 📄 e Tesoura ✂️</h1>
+      <h1 className="text-4xl font-bold mb-6">Pedra 💎 , Papel 📄 e Tesoura ✂️</h1>
       <label className="block mb-2">Quantidade por tipo:</label>
       <input
         type="number"

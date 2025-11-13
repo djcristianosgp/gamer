@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { React, useState, useEffect, useRef, useCallback } from 'react';
+
 // Regras do jogo
 const rules = {
   rock: 'scissors',
@@ -174,7 +175,7 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
         />
       </div>
       <div className="flex justify-around mb-4">
-        <div>🪨: {counts.rock}</div>
+        <div>💎: {counts.rock}</div>
         <div>📄: {counts.paper}</div>
         <div>✂️: {counts.scissors}</div>
       </div>
@@ -203,7 +204,7 @@ function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, se
               // transform: obj.transforming ? 'scale(1.1) rotate(180deg)' : 'scale(1)',
             }}
           >
-            {obj.type === 'rock' && '🪨'}
+            {obj.type === 'rock' && '💎'}
             {obj.type === 'paper' && '📄'}
             {obj.type === 'scissors' && '✂️'}
           </div>

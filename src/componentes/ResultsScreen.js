@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Regras do jogo
 const rules = {
   rock: 'scissors',
@@ -7,7 +9,7 @@ const rules = {
 
 function ResultsScreen({ winner, restartGame, elapsedTime, playerName }) {
   const label = {
-    rock: 'Pedra 🪨',
+    rock: 'Pedra 💎',
     paper: 'Papel 📄',
     scissors: 'Tesoura ✂️',
   };

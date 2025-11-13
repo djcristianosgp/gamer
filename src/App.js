@@ -1,10 +1,8 @@
-import { useState } from 'react';
+import { React, useState } from 'react';
 import StartScreen from './componentes/StartScreen';
 import GameScreen from './componentes/GameScreen';
 import ResultsScreen from './componentes/ResultsScreen';
 import './App.css';
-
-
 
 const versaosystem = {
   ano: '2025',
