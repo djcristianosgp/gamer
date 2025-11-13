@@ -19,6 +19,7 @@ function StartScreen({ objectCount, setObjectCount, startGame, moveSpeed, setMov
       />
       <input
         type="text"
+        name="name"
         value={playerName}
         onChange={(e) => setPlayerName(e.target.value)}
         placeholder="Digite seu nome"
