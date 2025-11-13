@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import React from 'react';
+import { useState } from 'react';
 import StartScreen from './componentes/StartScreen';
 import GameScreen from './componentes/GameScreen';
 import ResultsScreen from './componentes/ResultsScreen';
