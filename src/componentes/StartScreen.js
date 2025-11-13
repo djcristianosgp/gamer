@@ -17,11 +17,13 @@ function StartScreen({ objectCount, setObjectCount, startGame, moveSpeed, setMov
         onChange={(e) => setObjectCount(Math.max(1, parseInt(e.target.value)))}
         className="p-2 border rounded text-center w-full mb-4"
       />
+      <label className="block mb-2" htmlFor="nome">Nome do Jogador:</label>
       <input
         type="text"
         id="nome" 
         name="nome" 
         autoComplete="name"
+        textAlign="center"        
         value={playerName}
         onChange={(e) => setPlayerName(e.target.value)}
         placeholder="Digite seu nome"
