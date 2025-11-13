@@ -7,7 +7,7 @@ const rules = {
   scissors: 'paper',
 };
 
-function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed }) {
+function GameScreen({ initialObjectCount, moveSpeed, setMoveSpeed, setScreen, setWinner, setElapsedTimeFinal }) {
   const gameAreaRef = useRef(null);
   const [objects, setObjects] = useState([]);
   const [counts, setCounts] = useState({ rock: 0, paper: 0, scissors: 0 });
